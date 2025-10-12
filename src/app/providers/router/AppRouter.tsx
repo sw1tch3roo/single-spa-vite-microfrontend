@@ -1,31 +1,22 @@
-import {has, ifElse, map, prop} from 'ramda'
-import {Suspense, memo, useCallback} from 'react'
-import {Route, Routes} from 'react-router-dom'
-import {Private, Public} from './RequireAuth'
-import {AppRoutesProps, routeConfig} from './config'
+import { Suspense, memo, useCallback } from 'react';
+import { Route, Routes } from 'react-router';
+import { Private, Public } from './RequireAuth';
+import { type AppRoutesProps, routeConfig } from './config';
 
 const AppRouter = memo(() => {
     const renderWithWrapper = useCallback((route: AppRoutesProps) => {
-        const element = (
-            <Suspense fallback={<div>loading...</div>}>
-                {prop('element', route)}
-            </Suspense>
-        )
+        const el = <Suspense fallback={<div>loading...</div>}>{route.element}</Suspense>;
 
         return (
             <Route
-                key={prop('path', route)}
-                path={prop('path', route)}
-                element={ifElse(
-                    has('authOnly'),
-                    () => <Private>{element}</Private>,
-                    () => <Public>{element}</Public>
-                )(route)}
+                key={route.path}
+                path={route.path}
+                element={route.authOnly ? <Private>{el}</Private> : <Public>{el}</Public>}
             />
-        )
-    }, [])
+        );
+    }, []);
 
-    return <Routes>{map(renderWithWrapper, Object.values(routeConfig))}</Routes>
-})
+    return <Routes>{Object.values(routeConfig).map(renderWithWrapper)}</Routes>;
+});
 
-export default AppRouter
+export default AppRouter;

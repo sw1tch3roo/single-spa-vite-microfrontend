@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+bunx lint-staged
+bun lint

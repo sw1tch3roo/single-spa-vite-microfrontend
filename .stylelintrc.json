@@ -1,0 +1,23 @@
+{
+    "extends": ["stylelint-config-standard"],
+    "rules": {
+        "selector-class-pattern": [
+            "[a-zA-Z-_]+",
+            {
+                "message": "Expected class selector to contain only letters, hyphens, or underscores"
+            }
+        ],
+        "selector-pseudo-class-no-unknown": [
+            true,
+            {
+                "ignorePseudoClasses": ["global"]
+            }
+        ],
+        "custom-property-pattern": [
+            "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+            {
+                "message": "Expected custom property name to be kebab-case"
+            }
+        ]
+    }
+}

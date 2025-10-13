@@ -9,4 +9,4 @@ export enum AppRoutes {
 export const getRoutes = () => ({
     getRouteMain: () => '/main',
     getRouteLogin: () => '/login',
-})
+});

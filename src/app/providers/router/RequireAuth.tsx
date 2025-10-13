@@ -1,19 +1,35 @@
-import { isAuth } from '@/shared/lib/is-auth'
-import { getRoutes } from '@/shared/model/router'
-import { prop } from 'ramda'
-import { PropsWithChildren } from 'react'
-import { Navigate, useLocation } from 'react-router-dom'
+import { type PropsWithChildren } from 'react';
+import { Navigate, useLocation } from 'react-router';
+import { isAuthorized } from '~/shared/lib/isAuthorized';
+import { getRoutes } from '~/shared/model/router';
 
-export const Private = ({ children }: PropsWithChildren) =>
-  !isAuth() ? <Navigate to={getRoutes().getRouteLogin()} replace /> : children
+export const Private = ({ children }: PropsWithChildren) => {
+    const isAuth = isAuthorized();
+
+    if (!isAuth) {
+        return (
+            <Navigate
+                to={getRoutes().getRouteLogin()}
+                replace
+            />
+        );
+    }
+
+    return children;
+};
 
 export const Public = ({ children }: PropsWithChildren) => {
-  const location = useLocation()
+    const { pathname } = useLocation();
+    const isAuth = isAuthorized();
 
-  return isAuth() &&
-    [getRoutes().getRouteLogin()].includes(prop('pathname', location)) ? (
-    <Navigate to={getRoutes().getRouteMain()} replace />
-  ) : (
-    children
-  )
-}
+    if (!isAuth || ![getRoutes().getRouteLogin()].includes(pathname)) {
+        return (
+            <Navigate
+                to={getRoutes().getRouteMain()}
+                replace
+            />
+        );
+    }
+
+    return children;
+};

@@ -1,0 +1,4 @@
+{
+    "include": ["stars", "deps", "types"],
+    "exclude": []
+}
